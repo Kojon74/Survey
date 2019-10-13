@@ -4,44 +4,34 @@ import math
 waypoints = None
 
 waypoint = [
-    (12, 45),
+    (12, 40),
     (46, 87),
-    (54, 2523),
-    (51, 864),
-    (34, 324),
-    (12, 45),
-    (46, 87),
-    (54, 2523),
-    (51, 864),
-    (36, 243)
+    (54, 23),
+    (51, 34),
+    (34, 24),
+    (21, 49),
+    (64, 45),
+    (45, 25),
+    (15, 41),
+    (63, 32)
 ]
 
 def __init__(self, waypoints):
     self.waypoints = waypoints
 
 def shortestPath(waypoints):
-    iterations = 2000000
-    count = 0
     length = len(waypoints)
+    iterations = 100000
+    count = 0
     while count < iterations:
-        a1 = random.randint(0, length - 1)
-        a2 = random.randint(0, length - 2)
-        b1 = random.randint(0, length - 3)
-        b2 = random.randint(0, length - 4)
-        if a1 <= a2:
-            a2 += 1
-        elif a1 <= b1 & a2 <= b1:
-            b1 += 2
-        elif a1 <= b1 | a2 <= b1:
-            b1 += 1
-        elif a1 <= b2 & a2 <= b2 & b1 <= b2:
-            b2 += 3
-        elif (a1 <= b2 & a2 <= b2) | (a1 <= b2 & b1 <= b2) | (a2 <= b2 & b1 <= b2):
-            b2 += 2
-        elif a1 <= b2 | a2 <= b2 | b1 <= b2:
-            b2 += 1
-        if isCrossing(waypoints[a1], waypoints[a2], waypoints[b1], waypoints[b2]):
-            waypoints = swapPosition(waypoints, a2, b2)
+        a = random.sample(range(1,length-1), 2)
+        if(a[0] == a[1]-1):
+            a[0] -= 1
+            a[1] += 1
+        elif a[0] == a[1]-2:
+            a[0] -= 1
+        if isCrossing(waypoints[a[0]], waypoints[a[0]+1], waypoints[a[1]], waypoints[a[1]-1]):
+            waypoints = swapPosition(waypoints, a[0], a[1])
         count += 1
     distance = totalDistance(waypoints)
     return distance
@@ -75,5 +65,19 @@ def totalDistance(_waypoints):
 def notTotalDistance(start, end):
     return math.sqrt((start[1]-end[1])**2 + (start[0] - end[0])**2)
 
-print(shortestPath(waypoint))
+def takeBestResult():
+    lowest = shortestPath(waypoint)
+    #lowestWaypoints = shortestPath(waypoint).waypoints
+    for x in range(0,5):
+        current = shortestPath(waypoint)
+        #currentWaypoints = shortestPath(waypoint).waypoints
+        if(current < lowest):
+            lowest = current
+            #lowestWaypoints = currentWaypoints
+    
+    #print(lowestWaypoints)
+
+    return lowest
+
+print(takeBestResult())
 
